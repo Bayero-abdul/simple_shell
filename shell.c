@@ -21,7 +21,7 @@ int main(void)
 
 	while (1)
 	{
-		_puts("cisfun$ ");
+		printf("cisfun$ ");
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
