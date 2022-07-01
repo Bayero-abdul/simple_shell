@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,39 +14,41 @@
 */
 int main(void)
 {
-	char *line = NULL, *argv[] = { NULL, NULL, NULL, NULL }, *env[] = {NULL};
+	char *argv[] = { NULL, NULL, NULL, NULL }, *environ[] = { NULL };
+	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
-	pid_t child_pid;
+	struct stat st;
 	int status;
+	pid_t pid;
 
-	while (1)
-	{
+	do {
 		printf("#cisfun$ ");
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
 			exit(EXIT_FAILURE);
 		}
-		if (line[--nread] == '\n')
-		line[nread] = '\0';
-
-		if (*line == '\0')
+		if (line[0] == '\n')
 			continue;
-		else
-		{
-			argv[0] = line;
-			child_pid = fork();
-			if (child_pid != 0)
-				wait(&status);
 
-			if (child_pid == 0)
+		if (line[--nread] == '\n')
+			line[nread] = '\0';
+
+		argv[0] = line;
+		if (stat(line, &st) == 0)
+		{
+			pid = fork();
+			if (pid == 0)
 			{
-				if (execve(line, argv, env) == -1)
+				if (execve(line, argv, environ) == -1)
 					perror("./shell");
 			}
+			wait(&status);
 		}
-	}
+		else
+			perror("./shell");
+	} while (1);
 
 	free(line);
 	return (0);
