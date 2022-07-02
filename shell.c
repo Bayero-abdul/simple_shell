@@ -37,14 +37,14 @@ void execute(char *line, char *argv[], char *env[])
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror("Error");
+		perror("./shell");
 		exit(1);
 	}
 	else if (child_pid == 0)
 	{
 		if (execve(line, argv, env) == -1)
 		{
-			perror("Error");
+			perror("./shell");
 			exit(1);
 		}
 	}
@@ -82,8 +82,7 @@ int main(void)
 		else
 			perror("./shell");
 	}
-	if (isatty(STDIN_FILENO))
-		_puts("\n");
+
 	free(line);
 	return (0);
 }
