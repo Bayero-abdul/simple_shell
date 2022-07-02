@@ -36,9 +36,7 @@ void execute(char *line, char *argv[], char *env[])
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		free(line);
 		perror(argv[0]);
-
 	}
 
 	if (child_pid == 0)
@@ -71,7 +69,6 @@ int main(int argc, char *argv[], char *env[])
 	if (argc < 1)
 		return (-1);
 
-	signal(SIGINT, handler);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
