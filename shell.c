@@ -63,6 +63,7 @@ int main(void)
 	ssize_t nread;
 	struct stat st;
 
+	signal(SIGINT, handler);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -82,6 +83,9 @@ int main(void)
 		else
 			perror("./shell");
 	}
+
+	if (isatty(STDIN_FILENO))
+		_puts("\n");
 
 	free(line);
 	return (0);
