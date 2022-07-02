@@ -19,8 +19,8 @@ int main(void)
 	size_t len = 0;
     ssize_t nread;
 	struct stat st;
-	int status;
 	pid_t pid;
+    int status;
 
     do {	
 		_puts("#cisfun$ ");
@@ -52,8 +52,9 @@ int main(void)
 		}
 		else
 			perror("./shell");
-	} while (1);
+
+	} while (status);
 
 	free(line);
-	return (0);
+	exit(0);
 }
