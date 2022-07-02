@@ -19,7 +19,6 @@ void handler(int num)
 {
 	(void)num;
 	_puts("\n#cisfun$ ");
-	fflush(stdout);
 }
 
 /**
@@ -37,14 +36,16 @@ void execute(char *line, char *argv[], char *env[])
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror("./shell");
-		exit(1);
+		free(line);
+		perror(argv[0]);
+
 	}
-	else if (child_pid == 0)
+
+	if (child_pid == 0)
 	{
 		if (execve(line, argv, env) == -1)
 		{
-			perror("./shell");
+			perror(argv[0]);
 			exit(1);
 		}
 	}
@@ -54,34 +55,47 @@ void execute(char *line, char *argv[], char *env[])
 
 /**
 * main - simple shell
+* @argc: number of command arguments
+* @argv: list of strings
+* @env: list of strings
 * Return: 0 if no errors
 */
-int main(void)
+int main(int argc, char *argv[], char *env[])
 {
-	char *argv[] = { NULL, NULL}, *env[] = { NULL }, *line = NULL;
+	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	struct stat st;
+	(void)env, (void)argv;
+
+	if (argc < 1)
+		return (-1);
 
 	signal(SIGINT, handler);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			_puts("#cisfun$ ");
+
 		nread = getline(&line, &len, stdin);
-		if (nread < 0)
+		if (nread ==  -1)
 			break;
-		if (line[--nread] == '\n')
-			line[nread] = '\0';
+
+		if (line[nread - 1] == '\n')
+			line[nread - 1] = '\0';
+
 		if (line[0] == '\0')
 			continue;
-		argv[0] = line;
+
 		if (stat(line, &st) == 0)
 		{
 			execute(line, argv, env);
 		}
 		else
-			perror("./shell");
+		{
+			perror(argv[0]);
+		}
+
 	}
 
 	if (isatty(STDIN_FILENO))
