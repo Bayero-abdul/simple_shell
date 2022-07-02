@@ -14,8 +14,8 @@
 */
 int main(void)
 {
-	char *argv[] = { NULL, NULL, NULL, NULL }, *environ[] = { NULL };
-	char *line = NULL;
+	char *argv[] = { NULL, NULL, NULL, NULL }, *environ[] = { NULL }; 
+	char *line = NULL, *cmd;
 	size_t len = 0;
 	ssize_t nread;
 	struct stat st;
@@ -27,14 +27,14 @@ int main(void)
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		if (line[0] == '\n')
 			continue;
-		if (line[--nread] == '\n')
-			line[nread] = '\0';
-		argv[0] = line;
-		if (stat(line, &st) == 0)
+
+		cmd = strtok(line, "\n");
+		argv[0] = cmd;
+		if (stat(cmd, &st) == 0)
 		{
 			pid = fork();
 			if (pid == -1)
@@ -43,7 +43,7 @@ int main(void)
 			}
 			if (pid == 0)
 			{
-				if (execve(line, argv, environ) == -1)
+				if (execve(cmd, argv, environ) == -1)
 					perror("./shell");
 			}
 			else
@@ -52,6 +52,7 @@ int main(void)
 		else
 			perror("./shell");
 	} while (1);
+
 	free(line);
 	return (0);
 }
