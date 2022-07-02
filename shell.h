@@ -1,8 +1,8 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SHELL_H
+#define SHELL_H
 
 int _puts(char *str);
 int _putchar(char c);
 int _strlen(char *str);
 
-#endif
+#endif /* SHELL_H */
