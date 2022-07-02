@@ -1,12 +1,24 @@
+#include <signal.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include "main.h"
+#include "shell.h"
+
+/**
+ * handler - Handles crtl c signal
+ * @num: signal
+ * Return: void
+ */
+void handler(int num)
+{
+	(void)num;
+	_puts("\n#cisfun$ ");
+	fflush(stdout);
+}
 
 /**
 * main - simple shell
@@ -14,37 +26,33 @@
 */
 int main(void)
 {
-	char *argv[] = { NULL, NULL }, *environ[] = { NULL }; 
-	char *line = NULL, *cmd;
+	char *argv[] = { NULL, NULL}, *env[] = { NULL }, *line = NULL;
 	size_t len = 0;
-    ssize_t nread;
+	ssize_t nread;
 	struct stat st;
+	int status;
 	pid_t pid;
-    int status;
 
-    do {	
-		_puts("#cisfun$ ");
-        nread = getline(&line, &len, stdin);
-        if (nread == -1)
-        {
-            exit(1);
-        }
-
-        if (line[0] == '\n')
-            continue;
-
-        cmd = strtok(line, "\n");
-		argv[0] = cmd;
-		if (stat(cmd, &st) == 0)
+	signal(SIGINT, handler);
+	while {
+		if (isatty(STDIN_FILENO))
+			_puts("#cisfun$ ");
+		nread = getline(&line, &len, stdin);
+		if (read < 0)
+			break;
+		if (line[--nread] == '\n')
+			line[nread] = '\0';
+		if (line[0] == '\0')
+			continue;
+		argv[0] = line;
+		if (stat(line, &st) == 0)
 		{
 			pid = fork();
 			if (pid == -1)
-			{
 				perror("./shell");
-			}
 			if (pid == 0)
 			{
-				if (execve(cmd, argv, environ) == -1)
+				if (execve(line, argv, env) == -1)
 					perror("./shell");
 			}
 			else
@@ -52,9 +60,9 @@ int main(void)
 		}
 		else
 			perror("./shell");
-
-	} while (status);
-
+	}
+	if (isatty(STDIN_FILENO))
+		_puts("\n");
 	free(line);
-	exit(0);
+	return (0);
 }
