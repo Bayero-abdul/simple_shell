@@ -14,25 +14,26 @@
 */
 int main(void)
 {
-	char *argv[] = { NULL, NULL, NULL, NULL }, *environ[] = { NULL }; 
+	char *argv[] = { NULL, NULL }, *environ[] = { NULL }; 
 	char *line = NULL, *cmd;
 	size_t len = 0;
-	ssize_t nread;
+    ssize_t nread;
 	struct stat st;
 	int status;
 	pid_t pid;
 
-	do {
+    do {	
 		_puts("#cisfun$ ");
-		nread = getline(&line, &len, stdin);
-		if (nread == -1)
-		{
-			exit(1);
-		}
-		if (line[0] == '\n')
-			continue;
+        nread = getline(&line, &len, stdin);
+        if (nread == -1)
+        {
+            exit(1);
+        }
 
-		cmd = strtok(line, "\n");
+        if (line[0] == '\n')
+            continue;
+
+        cmd = strtok(line, "\n");
 		argv[0] = cmd;
 		if (stat(cmd, &st) == 0)
 		{
