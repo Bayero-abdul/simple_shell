@@ -23,7 +23,7 @@ int main(void)
 	pid_t pid;
 
 	do {
-		printf("#cisfun$ ");
+		_puts("#cisfun$ ");
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
@@ -31,25 +31,27 @@ int main(void)
 		}
 		if (line[0] == '\n')
 			continue;
-
 		if (line[--nread] == '\n')
 			line[nread] = '\0';
-
 		argv[0] = line;
 		if (stat(line, &st) == 0)
 		{
 			pid = fork();
+			if (pid == -1)
+			{
+				perror("./shell");
+			}
 			if (pid == 0)
 			{
 				if (execve(line, argv, environ) == -1)
 					perror("./shell");
 			}
-			wait(&status);
+			else
+				wait(&status);
 		}
 		else
 			perror("./shell");
 	} while (1);
-
 	free(line);
 	return (0);
 }
