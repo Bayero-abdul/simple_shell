@@ -60,7 +60,7 @@ void execute(char *line, char *argv[], char *env[])
 */
 int main(int argc, char *argv[], char *env[])
 {
-	char *line = NULL;
+	char *line = NULL, *cmd = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	struct stat st;
@@ -81,12 +81,14 @@ int main(int argc, char *argv[], char *env[])
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		if (line[0] == '\0')
+		cmd = strtok(line, " ");
+		if (cmd == NULL || *cmd == '\0')
 			continue;
 
-		if (stat(line, &st) == 0)
+		argv[0] = cmd;
+		if (stat(cmd, &st) == 0)
 		{
-			execute(line, argv, env);
+			execute(cmd, argv, env);
 		}
 		else
 		{
