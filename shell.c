@@ -54,7 +54,6 @@ int main(int argc, char *argv[], char *env[])
 		arg_list = parse_arg(line);
 
 		cmd = arg_list[0];
-		printf("cmd: %s\n", cmd);
 		if (cmd == NULL || *cmd == '\0')
 			continue;
 		
