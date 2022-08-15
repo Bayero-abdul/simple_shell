@@ -8,48 +8,15 @@
 #include <sys/stat.h>
 #include "shell.h"
 
-void execute(char *line, char *argv[], char *env[]);
-
 /**
- * handler - Handles crtl c signal
- * @num: signal
- * Return: void
- */
-void handler(int num)
+* prompt - prints a prompt
+* Return: void
+*/
+void prompt(void)
 {
-	(void)num;
-	_puts("\n#cisfun$ ");
+	_puts("#cisfun$ ");
 }
 
-/**
- * execute - executes the command
- * @line: command to run
- * @argv: list of strings
- * @env: list of strings
- * Return: void
- */
-void execute(char *line, char *argv[], char *env[])
-{
-	pid_t child_pid;
-	int status;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		perror(argv[0]);
-	}
-
-	if (child_pid == 0)
-	{
-		if (execve(line, argv, env) == -1)
-		{
-			perror(argv[0]);
-			exit(1);
-		}
-	}
-	else
-		wait(&status);
-}
 
 /**
 * main - simple shell
@@ -60,46 +27,53 @@ void execute(char *line, char *argv[], char *env[])
 */
 int main(int argc, char *argv[], char *env[])
 {
-	char *line = NULL, *cmd = NULL;
-	size_t len = 0;
+	char *line = NULL, **arg_list;
+	char *cmd, *prog_name = argv[0];
 	ssize_t nread;
+	size_t len = 0;
 	struct stat st;
 	(void)env, (void)argv;
 
+
 	if (argc < 1)
 		return (-1);
-
+	
+	signal(SIGINT, handler);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			_puts("#cisfun$ ");
+			prompt();
 
 		nread = getline(&line, &len, stdin);
-		if (nread ==  -1)
+		if (nread == -1)
 			break;
 
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		cmd = strtok(line, " ");
+		arg_list = parse_arg(line);
+
+		cmd = arg_list[0];
+		printf("cmd: %s\n", cmd);
 		if (cmd == NULL || *cmd == '\0')
 			continue;
+		
 
-		argv[0] = cmd;
+
 		if (stat(cmd, &st) == 0)
 		{
-			execute(cmd, argv, env);
+			execute(arg_list, prog_name);
 		}
 		else
 		{
-			perror(argv[0]);
+			perror(prog_name);
 		}
-
+		free(arg_list);
 	}
 
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
-
+	
 	free(line);
 	return (0);
 }
