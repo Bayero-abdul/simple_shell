@@ -55,7 +55,10 @@ int main(int argc, char *argv[], char *env[])
 
 		cmd = arg_list[0];
 		if (cmd == NULL || *cmd == '\0')
+		{
+			free(arg_list);
 			continue;
+		}
 		
 
 
