@@ -14,6 +14,9 @@ char *read_cmd(void);
 /* parse_arg.c */
 char **parse_arg(char *arg);
 
+/* handle_path */
+char *handle_path(char **arg_list);
+
 /* execute.c */
 void execute(char **arg_list, char *prog_name);
 
