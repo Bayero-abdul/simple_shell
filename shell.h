@@ -2,6 +2,7 @@
 #define SHELL_H
 
 void prompt(void);
+char *get_input(void);
 
 /* puts.c */
 int _puts(char *str);
