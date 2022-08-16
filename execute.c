@@ -17,7 +17,7 @@ void execute(char **arg_list, char *prog_name)
 {
 	char **env = {NULL};
 	pid_t child_pid;
-	int status, i;
+	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -27,10 +27,6 @@ void execute(char **arg_list, char *prog_name)
 
 	if (child_pid == 0)
 	{
-		for (i = 0; arg_list[i] != NULL; i++)
-		{
-			printf("exec_arg_list[%d]: %s\n",i,  arg_list[i]);
-		}
 		if (execve("/bin//ls", arg_list, env) == -1)
 		{
 			perror(prog_name);

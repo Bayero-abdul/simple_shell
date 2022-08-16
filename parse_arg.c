@@ -21,8 +21,6 @@ char **parse_arg(char *arg)
 	for (i = 0; ; arg = NULL, i++)
 	{
 		token = strtok(arg, " ");
-		printf("token: %s\n", token);
-
 		if (token == NULL)
 			break;
 
@@ -33,10 +31,5 @@ char **parse_arg(char *arg)
 	}
 
 	arg_list[i] = NULL;
-
-	for (i = 0; arg_list[i] != NULL; i++)
-	{
-		printf("arg_list[%d]: %s\n", i, arg_list[i]);
-	}
 	return (arg_list);
 }

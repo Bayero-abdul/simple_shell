@@ -59,13 +59,11 @@ int main(int argc, char *argv[], char *env[])
 			execute(arg_list, prog_name);
 		else
 			perror(prog_name);
-		
+
 		free(arg_list);
-		
 	}
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
-	
 	free(line);
 	return (0);
 }
