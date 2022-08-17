@@ -29,6 +29,7 @@ int main(int argc, char *argv[], char *env[])
 	char *line = NULL, **arg_list;
 	char *cmd, *prog_name = argv[0];
 	struct stat st;
+	unsigned int counter = 0;
 	(void)env, (void)argv, (void)argc;
 
 	signal(SIGINT, handler);
@@ -36,6 +37,7 @@ int main(int argc, char *argv[], char *env[])
 	{
 		char bin[64] = "/bin/";
 
+		counter++;
 		if (isatty(STDIN_FILENO))
 			prompt();
 
@@ -61,11 +63,10 @@ int main(int argc, char *argv[], char *env[])
 		}
 
 		if (stat(cmd, &st) == -1)
-			perror(prog_name);
+			fprintf(stderr, "./hsh: %d: %s: not found\n", counter, cmd);
 		else
 			execute(arg_list, prog_name);
-
-
+			
 		free(line);
 		free(arg_list);
 	}
