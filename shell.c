@@ -63,7 +63,7 @@ int main(int argc, char *argv[], char *env[])
 		}
 
 		if (stat(cmd, &st) == -1)
-			fprintf(stderr, "./hsh: %d: %s: not found\n", counter, cmd);
+			fprintf(stderr, "%s: %d: %s: not found\n", prog_name, counter, cmd);
 		else
 			execute(arg_list, prog_name);
 			
