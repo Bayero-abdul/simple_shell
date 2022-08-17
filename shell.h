@@ -1,6 +1,12 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+struct alias
+{
+	char *alias;
+	char *real_name;
+};
+
 void prompt(void);
 char *get_input(void);
 

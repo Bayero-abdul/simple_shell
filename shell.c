@@ -38,34 +38,42 @@ int main(int argc, char *argv[], char *env[])
 
 		if (isatty(STDIN_FILENO))
 			prompt();
+
 		line = get_input();
 		if (line == NULL)
 			break;
+
 		arg_list = parse_arg(line);
+
 		cmd = arg_list[0];
 		if (cmd == NULL || *cmd == '\0')
 		{
 			free(line);
 			free(arg_list);
 			continue;
-		}
+	}
+
 		if (strcmp(cmd, "ls") == 0)
 		{
 			strcat(bin, arg_list[0]);
 			arg_list[0] = bin;
 			cmd = arg_list[0];
 		}
-		if (stat(cmd, &st) == 0)
-			execute(arg_list, prog_name);
-		else
+
+		if (stat(cmd, &st) == -1)
 			perror(prog_name);
+		else
+			execute(arg_list, prog_name);
+
 
 		free(line);
 		free(arg_list);
 	}
+
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
-	return (0);
+	
+	exit(0);
 }
 
 /**

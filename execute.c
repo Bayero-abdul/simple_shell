@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include "shell.h"
 
 
 /**
@@ -27,7 +27,7 @@ void execute(char **arg_list, char *prog_name)
 
 	if (child_pid == 0)
 	{
-		if (execve("/bin//ls", arg_list, env) == -1)
+		if (execve(arg_list[0], arg_list, env) == -1)
 		{
 			perror(prog_name);
 			exit(1);
