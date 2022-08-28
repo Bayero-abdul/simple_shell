@@ -22,7 +22,7 @@ char *read_cmd(void);
 char **parse_arg(char *arg);
 
 /* handle_path */
-char *handle_path(char **arg_list);
+char *handle_path(char **arg_list, char *prog_name);
 
 /* execute.c */
 void execute(char **arg_list, char *prog_name);

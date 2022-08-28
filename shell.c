@@ -26,18 +26,13 @@ void prompt(void)
 */
 int main(int argc, char *argv[], char *env[])
 {
-	char *line = NULL, **arg_list;
-	char *cmd, *prog_name = argv[0];
+	char *cmd, *prog_name = argv[0], *line = NULL, **arg_list;
 	struct stat st;
-	unsigned int counter = 0;
 	(void)env, (void)argv, (void)argc;
 
 	signal(SIGINT, handler);
 	while (1)
 	{
-		char bin[64] = "/bin/";
-
-		counter++;
 		if (isatty(STDIN_FILENO))
 			prompt();
 
@@ -46,34 +41,30 @@ int main(int argc, char *argv[], char *env[])
 			break;
 
 		arg_list = parse_arg(line);
-
-		cmd = arg_list[0];
-		if (cmd == NULL || *cmd == '\0')
-		{
-			free(line);
-			free(arg_list);
-			continue;
-	}
-
-		if (strcmp(cmd, "ls") == 0)
-		{
-			strcat(bin, arg_list[0]);
-			arg_list[0] = bin;
-			cmd = arg_list[0];
-		}
-
-		if (stat(cmd, &st) == -1)
-			fprintf(stderr, "%s: %d: %s: not found\n", prog_name, counter, cmd);
-		else
+		if (line[0] != '\0' && stat(arg_list[0], &st) == 0)
 			execute(arg_list, prog_name);
-			
+		else
+		{
+			cmd = handle_path(arg_list, prog_name);
+			if (cmd == NULL || *cmd == '\0')
+			{
+				free(line);
+				free(arg_list);
+				continue;
+			}
+			if (stat(cmd, &st) == 0)
+				execute(arg_list, prog_name);
+			else
+				perror(prog_name);
+
+			free(cmd);
+		}
 		free(line);
 		free(arg_list);
 	}
-
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
-	
+
 	exit(0);
 }
 

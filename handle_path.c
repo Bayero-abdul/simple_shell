@@ -6,41 +6,34 @@
 /**
  * handle_path - Handles command path
  * @arg_list: list of command line arguments
+ * @prog_name: pointer to program name
  * Return: command
  */
-char *handle_path(char **arg_list)
+char *handle_path(char **arg_list, char *prog_name)
 {
-	char str[64];
-	char *cmd, *token;
+	char *cmd;
 	char bin[64] = "/bin/";
 	struct stat st;
 
 	cmd = arg_list[0];
 	if (cmd == NULL || *cmd == '\0')
+		return (NULL);
+
+	if (cmd[0] == '/')
 	{
+		perror(prog_name);
 		return (NULL);
 	}
 
-	strcpy(str, cmd);
-	token = strtok(str, "/");
-	printf("token: %s\n", token);
-
-	if (token != NULL)
+	strcat(bin, cmd);
+	arg_list[0] = strdup(bin);
+	cmd = arg_list[0];
+	if (stat(cmd, &st) == -1)
 	{
-		if (strcmp(token, "bin") != 0)
-		{
-			strcat(bin, arg_list[0]);
-			printf("arg_list: %s\n", arg_list[0]);
-			printf("bin: %s\n", bin);
-			arg_list[0] = strdup(bin);
-			if (stat(arg_list[0], &st) == 0)
-			{
-				printf("Hello Boss");
-			}
-
-			printf("arg_list[0]: %s\n", arg_list[0]);
-			cmd = arg_list[0];
-		}
+		free(cmd);
+		perror(prog_name);
+		return (NULL);
 	}
+
 	return (cmd);
 }
