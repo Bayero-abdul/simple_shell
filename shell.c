@@ -40,31 +40,25 @@ int main(int argc, char *argv[], char *env[])
 		if (line == NULL)
 			break;
 
-		arg_list = parse_arg(line);
-		if (line[0] != '\0' && stat(arg_list[0], &st) == 0)
-			execute(arg_list, prog_name);
+		cmd = strtok(line, " ");
+		if (cmd == NULL || *cmd == '\0')
+			continue;
+
+		argv[0] = cmd;
+		if (stat(cmd, &st) == 0)
+		{
+			execute(cmd, argv, env);
+		}
 		else
 		{
-			cmd = handle_path(arg_list, prog_name);
-			if (cmd == NULL || *cmd == '\0')
-			{
-				free(line);
-				free(arg_list);
-				continue;
-			}
-			if (stat(cmd, &st) == 0)
-				execute(arg_list, prog_name);
-			else
-				perror(prog_name);
-
-			free(cmd);
+			perror(argv[0]);
 		}
-		free(line);
-		free(arg_list);
+
 	}
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
 
+	free(line);
 	exit(0);
 }
 
