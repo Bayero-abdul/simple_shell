@@ -26,7 +26,7 @@ int _getline(char **lineptr, FILE *stream)
 	}	
 	hello[i] = '\0';
 	*lineptr = hello;
-	if (nread == 0)
+	if (nread == 0 && ch != '\n')
 		return (-1);
 
 	return (nread);
