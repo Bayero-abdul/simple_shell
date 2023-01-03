@@ -1,6 +1,8 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+#include <stdio.h>
+
 struct alias
 {
 	char *alias;
@@ -32,5 +34,7 @@ void free_arg(char **arg);
 
 /* sig_handler.c */
 void handler(int num);
+
+int _getline(char **lineptr, FILE *stream);
 
 #endif /* SHELL_H */

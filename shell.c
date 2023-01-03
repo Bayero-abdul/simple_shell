@@ -26,45 +26,10 @@ void prompt(void)
 */
 int main(int argc, char *argv[], char *env[])
 {
-	/*char *cmd, *line;
-	struct stat st;
-	(void)env, (void)argv, (void)argc;
-
-	signal(SIGINT, handler);
-	while (1)
-	{
-		if (isatty(STDIN_FILENO))
-			prompt();
-
-		line = get_input();
-		if (line == NULL)
-			break;
-
-		cmd = strtok(line, " ");
-		if (cmd == NULL || *cmd == '\0')
-			continue;
-
-		argv[0] = cmd;
-		if (stat(cmd, &st) == 0)
-		{
-			execute(cmd, argv, env);
-		}
-		else
-		{
-			perror(argv[0]);
-		}
-
-	}
-	if (isatty(STDIN_FILENO))
-		_puts("\n");
-
-	free(line);
-	exit(0);*/
-
 	char *line = NULL, **arg_list;
 	char *cmd, *prog_name = argv[0];
-	ssize_t nread;
-	size_t len = 0;
+	int nread;
+	/*size_t len = 0;*/
 	struct stat st;
 	(void)env, (void)argv;
 	if (argc < 1)
@@ -75,11 +40,10 @@ int main(int argc, char *argv[], char *env[])
 	{
 		if (isatty(STDIN_FILENO))
 			prompt();
-		nread = getline(&line, &len, stdin);
+		nread = _getline(&line, stdin);
 		if (nread == -1)
 			break;
-		if (line[nread - 1] == '\n')
-			line[nread - 1] = '\0';
+
 		arg_list = parse_arg(line);
 
 		cmd = arg_list[0];
@@ -88,8 +52,6 @@ int main(int argc, char *argv[], char *env[])
 			free(arg_list);
 			continue;
 		}
-
-
 
 		if (stat(cmd, &st) == 0)
 		{
