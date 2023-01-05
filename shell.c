@@ -77,10 +77,7 @@ char *get_input(void)
 
 	nread = getline(&line, &len, stdin);
 	if (nread == -1)
-	{
-		free(line);
 		return (NULL);
-	}
 
 	if (line[nread - 1] == '\n')
 		line[nread - 1] = '\0';
