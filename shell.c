@@ -34,18 +34,15 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 			break;
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
-		arg_list = split_words(line, ' ');
-		if (arg_list == NULL)
-			continue;
-
+		
+		arg_list = parse_arg(line);
 		cmd = arg_list[0];
-		/*
 		if (cmd == NULL || *cmd == '\0')
 		{
 			free(arg_list);
 			continue;
 		}
-*/
+
 		if (stat(cmd, &st) == 0)
 		{
 			execute(arg_list, prog_name);
