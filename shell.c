@@ -15,7 +15,7 @@
 * @env: list of strings
 * Return: 0 if no errors
 */
-int main(int argc, char *argv[], char *env[])
+int main(int argc __attribute__((unused)), char *argv[], char *env[])
 {
 	char *line = NULL, **arg_list;
 	char *cmd, *prog_name = argv[0];
@@ -58,7 +58,6 @@ int main(int argc, char *argv[], char *env[])
 	
 	free(line);
 	return (0);
-}
 }
 
 /**
