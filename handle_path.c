@@ -17,7 +17,7 @@ char *handle_path(char **arg_list, char *prog_name __attribute__((unused)))
 	
 	if (stat(cmd, &st) == 0)
 		return (cmd);
-
+	
 	path = _which(cmd);
 	if (path != NULL)
 	{

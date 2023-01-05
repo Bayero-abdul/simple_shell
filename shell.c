@@ -20,13 +20,14 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 	char *line = NULL, **arg_list;
 	char *cmd, *prog_name = argv[0];
 	ssize_t nread;
-	size_t len = 0;
+	size_t cnt = 0, len = 0;
 	struct stat st;
-	(void)env, (void)argv;
-	
+	(void)argv, (void)env;
+
 	signal(SIGINT, handler);
 	while (1)
 	{
+		cnt++;
 		if (isatty(STDIN_FILENO))
 			_puts("#cisfun$ ");
 		nread = getline(&line, &len, stdin);
@@ -41,17 +42,21 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 	
 		cmd = handle_path(arg_list, prog_name);
                 if (cmd == NULL || *cmd == '\0')
-                        continue;
-
-                arg_list[0] = cmd;
-
-		if (stat(cmd, &st) == 0)
 		{
-			execute(arg_list, prog_name);
+			fprintf(stderr, "%s: %ld: %s: not found\n", prog_name, cnt, arg_list[0]);
 		}
 		else
 		{
-			perror(prog_name);
+ 
+	                arg_list[0] = cmd;
+			if (stat(cmd, &st) == 0)
+			{
+				execute(arg_list, prog_name);
+			}
+			else
+			{
+				perror(prog_name);
+			}
 		}
 		free_array(arg_list);
 	}
