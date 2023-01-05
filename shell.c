@@ -29,23 +29,20 @@ int main(int argc, char *argv[], char *env[])
 	char *line = NULL, **arg_list;
 	char *cmd, *prog_name = argv[0];
 	int nread;
-	/*size_t len = 0;*/
+	size_t len = 0;
 	struct stat st;
 	(void)env, (void)argv;
-	if (argc < 1)
-		return (-1);
 	
 	signal(SIGINT, handler);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			prompt();
-		nread = _getline(&line, stdin);
+		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 			break;
 
 		arg_list = parse_arg(line);
-
 		cmd = arg_list[0];
 		if (cmd == NULL || *cmd == '\0')
 		{
