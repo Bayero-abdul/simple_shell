@@ -19,7 +19,6 @@ char *_which(char *cmd)
 		strcpy(c_path, arr[i]);
 		c_path = strcat(c_path, "/");
 		c_path = strcat(c_path, cmd);
-		printf("c_path: %s\n", c_path);
 		if (stat(c_path, &sb) == 0)
 		{
 			free_array(arr);
