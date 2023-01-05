@@ -38,8 +38,8 @@ int main(int argc, char *argv[], char *env[])
 	{
 		if (isatty(STDIN_FILENO))
 			prompt();
-		nread = getline(&line, &len, stdin);
-		if (nread == -1)
+		line = get_input();
+		if (line == NULL)
 			break;
 
 		arg_list = parse_arg(line);
