@@ -39,7 +39,8 @@ void free_arg(char **arg);
 void handler(int num);
 
 int _getline(char **lineptr, FILE *stream);
-int count_words(char *str, char del);
+int count_words(char *str);
 char **split_words(char *str, char del);
+void free_array(char **array);
 
 #endif /* SHELL_H */

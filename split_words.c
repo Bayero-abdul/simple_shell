@@ -1,19 +1,18 @@
 #include "shell.h"
 
-int count_words(char *str, char del)
+int count_words(char *str)
 {
-	int i = 0, count = 0;
+	int i = 0, count = 0, state = 0;
 
-	/** Counting the number of words */
 	while (str[i] != '\0')
 	{
-		if (i == 0 && str[i] == del)
+		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
+			state = 0;
+		else if (state == 0)
 		{
-			i++;
-			continue;
-		}
-		else if ( (str[i] == del || !(str[i+1])) && str[i-1] != del)
 			count++;
+			state = 1;
+		}
 		i++;
 	}
 	return (count);
@@ -25,7 +24,7 @@ char **split_words(char *str, char del)
 	int prev = 0, cur = 0;
 	char **arr, buf;
 
-	count = count_words(str, del);
+	count = count_words(str);
 	if (count == 0)
 		return (NULL);
 	arr = malloc(sizeof(char *) * (count + 1));

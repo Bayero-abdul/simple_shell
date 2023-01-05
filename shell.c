@@ -35,13 +35,15 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 		
-		arg_list = parse_arg(line);
+		arg_list = split_words(line, ' ');
+		if (arg_list == NULL)
+			continue;
 		cmd = arg_list[0];
-		if (cmd == NULL || *cmd == '\0')
+		/*if (cmd == NULL || *cmd == '\0')
 		{
 			free(arg_list);
 			continue;
-		}
+		}*/
 
 		if (stat(cmd, &st) == 0)
 		{
@@ -51,7 +53,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		{
 			perror(prog_name);
 		}
-		free(arg_list);
+		free_array(arg_list);
 	}
 	if (isatty(STDIN_FILENO))
 		_puts("\n");
