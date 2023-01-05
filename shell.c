@@ -36,10 +36,8 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 			line[nread - 1] = '\0';
 		arg_list = split_words(line, ' ');
 		if (arg_list == NULL)
-		{
-			free(arg_list);
 			continue;
-		}
+
 		cmd = arg_list[0];
 		/*
 		if (cmd == NULL || *cmd == '\0')
