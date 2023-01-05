@@ -38,12 +38,12 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		arg_list = split_words(line, ' ');
 		if (arg_list == NULL)
 			continue;
-		cmd = arg_list[0];
-		/*if (cmd == NULL || *cmd == '\0')
-		{
-			free(arg_list);
-			continue;
-		}*/
+	
+		cmd = handle_path(arg_list, prog_name);
+                if (cmd == NULL || *cmd == '\0')
+                        continue;
+
+                arg_list[0] = cmd;
 
 		if (stat(cmd, &st) == 0)
 		{
