@@ -1,13 +1,16 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+#include <signal.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include "shell.h"
 
-struct alias
-{
-	char *alias;
-	char *real_name;
-};
 
 void prompt(void);
 char *get_input(void);
@@ -36,5 +39,7 @@ void free_arg(char **arg);
 void handler(int num);
 
 int _getline(char **lineptr, FILE *stream);
+int count_words(char *str, char del);
+char **split_words(char *str, char del);
 
 #endif /* SHELL_H */
