@@ -10,6 +10,8 @@ char *_which(char *cmd)
 	int i = 0;
 
 	path = _getenv("PATH");
+	if (!path)
+		return (NULL);
 	arr = split_words(path, ':');
 	if (!arr)
 		return (NULL);

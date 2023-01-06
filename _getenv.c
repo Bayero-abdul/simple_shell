@@ -16,9 +16,13 @@ char *_getenv(const char *name)
 	char *path = NULL;
       	int i;
 
-	  for (i = 0; environ[i] != NULL; i++)
-	  {
-		  if (strncmp(name, environ[i], strlen(name)) == 0)
+	if (!environ)
+		return (NULL);
+
+	 for (i = 0; environ[i] != NULL; i++)
+	 {
+
+    		 if (strncmp(name, environ[i], strlen(name)) == 0)
 		  {
 		    	  path = environ[i] + strlen(name) + 1;
 		    	  break;
