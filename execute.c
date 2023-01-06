@@ -34,5 +34,8 @@ void execute(char **arg_list, char *prog_name)
 		}
 	}
 	else
+	{
 		wait(&status);
+		errno = 0;
+	}
 }

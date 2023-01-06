@@ -9,8 +9,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <errno.h>
 #include "shell.h"
 
+extern int errno;
 
 void prompt(void);
 char *get_input(void);

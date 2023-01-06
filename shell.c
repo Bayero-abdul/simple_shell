@@ -64,7 +64,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		_puts("\n");
 	
 	free(line);
-	return (0);
+	_exit (errno);
 }
 
 /**

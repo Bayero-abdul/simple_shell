@@ -24,5 +24,6 @@ char *handle_path(char **arg_list, char *prog_name __attribute__((unused)))
 		free(cmd);
 		return (path);
 	}
+	errno = 127;
 	return (NULL);
 }
