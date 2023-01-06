@@ -29,10 +29,10 @@ char *read_cmd(void);
 char **parse_arg(char *arg);
 
 /* handle_path */
-char *handle_path(char **arg_list, char *prog_name);
+char *handle_path(char **arg_list, char *prog_name, int *flag);
 
 /* execute.c */
-void execute(char **arg_list, char *prog_name);
+void execute(char **arg_list, char *prog_name, int *flag);
 
 /* free_arg.c */
 void free_arg(char **arg);

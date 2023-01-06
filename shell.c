@@ -22,6 +22,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 	ssize_t nread;
 	size_t cnt = 0, len = 0;
 	struct stat st;
+	int flag = 0;
 	(void)argv, (void)env;
 
 	signal(SIGINT, handler);
@@ -40,7 +41,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		if (arg_list == NULL)
 			continue;
 	
-		cmd = handle_path(arg_list, prog_name);
+		cmd = handle_path(arg_list, prog_name, &flag);
                 if (cmd == NULL || *cmd == '\0')
 		{
 			fprintf(stderr, "%s: %ld: %s: not found\n", prog_name, cnt, arg_list[0]);
@@ -51,7 +52,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 	                arg_list[0] = cmd;
 			if (stat(cmd, &st) == 0)
 			{
-				execute(arg_list, prog_name);
+				execute(arg_list, prog_name, &flag);
 			}
 			else
 			{
@@ -64,7 +65,7 @@ int main(int argc __attribute__((unused)), char *argv[], char *env[])
 		_puts("\n");
 	
 	free(line);
-	_exit (errno);
+	_exit (flag);
 }
 
 /**

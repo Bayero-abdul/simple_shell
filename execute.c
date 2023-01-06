@@ -13,7 +13,7 @@
 * @prog_name: name of program
 * Return: void
 */
-void execute(char **arg_list, char *prog_name)
+void execute(char **arg_list, char *prog_name, int *flag)
 {
 	char **env = {NULL};
 	pid_t child_pid;
@@ -36,6 +36,6 @@ void execute(char **arg_list, char *prog_name)
 	else
 	{
 		wait(&status);
-		errno = 0;
+		*flag = 0;
 	}
 }

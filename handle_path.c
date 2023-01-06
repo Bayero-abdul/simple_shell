@@ -6,7 +6,7 @@
  * @prog_name: pointer to program name
  * Return: command
  */
-char *handle_path(char **arg_list, char *prog_name __attribute__((unused)))
+char *handle_path(char **arg_list, char *prog_name __attribute__((unused)), int *flag)
 {
 	char *cmd, *path = NULL;
 	struct stat st;
@@ -24,6 +24,6 @@ char *handle_path(char **arg_list, char *prog_name __attribute__((unused)))
 		free(cmd);
 		return (path);
 	}
-	errno = 127;
+	*flag = 127;
 	return (NULL);
 }
