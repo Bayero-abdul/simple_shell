@@ -9,8 +9,6 @@
  * 				 otherwise, NULL.
  */
 
-extern char **environ;
-
 char *_getenv(const char *name)
 {
 	char *path = NULL;
@@ -24,6 +22,8 @@ char *_getenv(const char *name)
 
     		 if (strncmp(name, environ[i], strlen(name)) == 0)
 		  {
+			  if (*(environ[i] + strlen(name)) != '=')
+				return (NULL);
 		    	  path = environ[i] + strlen(name) + 1;
 		    	  break;
 	      	  }

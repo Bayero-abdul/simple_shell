@@ -13,6 +13,7 @@
 #include "shell.h"
 
 extern int errno;
+extern char **environ;
 
 void prompt(void);
 char *get_input(void);
