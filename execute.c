@@ -15,7 +15,7 @@
 */
 void execute(char **arg_list, char *prog_name, int *flag)
 {
-	char **env = {NULL};
+	char **env = environ;
 	pid_t child_pid;
 	int status;
 
